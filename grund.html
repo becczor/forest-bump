@@ -264,34 +264,55 @@
 
 
 
-				//World
+				//*********** W O R L D **************
 
-				// testing math.plane
-				var upvec = new THREE.Vector3(0, 1, 0);
-				var mathplane = new THREE.Plane(upvec, 1);
-				scene.add(mathplane);
+				// --- PLANE NAD TEXTURE ------
+ 				var w = 40, h = 40;
 
-
-				// sara texture
+				// load texture file
 				var planeTex = THREE.ImageUtils.loadTexture("textures/sara.jpg");
+				// set repeating image all over the object
 				planeTex.wrapS = planeTex.wrapT = THREE.RepeatWrapping;
+				// set how small the image should be, how many times it should repeat
 				planeTex.repeat.set( 4, 4 );
+				// create a material with our texture to add on the object
 				var planeMat = new THREE.MeshBasicMaterial( { map: planeTex } );
+				// make sure the texture is applied to both sides
 				planeMat.side = THREE.DoubleSide;
 
-				var materialREB = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide}  );
-				
 				//floor
-				var planeGeometry = new THREE.PlaneGeometry(40, 40);
-		        //var planeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
-		        plane = new THREE.Mesh(planeGeometry, materialREB);
+				var planeGeometry = new THREE.PlaneGeometry(w, h);
+				// color material for testing without texture
+		        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
+		        plane = new THREE.Mesh(planeGeometry, planeMaterial);
 		        plane.rotation.x = -0.5 * Math.PI;
 				
 		        plane.receiveShadow  = true;
 		        scene.add(plane);
+
+		        // ------ SKYBOX --------
+				// code from http://stemkoski.github.io/Three.js/Skybox.html
+				var imagePrefix = "images/dawnmountain-";
+				var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				var imageSuffix = ".png";
+				var skyGeometry = new THREE.BoxGeometry( 500, 500, 500 );	
 				
-				//plane.matrixAutoUpdate = true;
-				//Cubes
+				// create array for images to skybox
+				var materialArray = [];
+				for (var i = 0; i < 6; i++)
+					materialArray.push( new THREE.MeshBasicMaterial({
+						map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+						side: THREE.BackSide
+					}));
+				var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+				
+				// testing variable for test without textures
+				//var himmelmaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00, side: THREE.BackSide } );
+				var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+				scene.add( skyBox );
+
+					
+				//----- CUBES --------
 				var geometry = new THREE.BoxGeometry( 10, 10, 10 );
 				var material = new THREE.MeshBasicMaterial( { color: 0xf0f0f0 } );
 
@@ -306,6 +327,8 @@
 					scene.add( mesh );
 
 				}
+
+				// ------ LIGHTS ---------
 
 				//POINTLIGHT (på marken)
 				var light1 = new THREE.PointLight( 0xFFFFFF, 0.5, 20);
@@ -344,7 +367,7 @@
 
 			}
 		
-
+			// FUNCTION for resizing the window
 			function onWindowResize() {
 
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -354,6 +377,7 @@
 
 			}
 
+			// FUNCTION for rendering and animation ?
 			function animate() {
 
 				requestAnimationFrame( animate );
@@ -408,12 +432,13 @@
 
 			}
 
+			// FUNCTION for making something to follow the camera and stick to its coordinates
 			function updatePosition(position) 
 			{
 				// Infinite plane
 				console.log("hej");
-				plane.position.x = position.x;
-				plane.position.z = position.z;
+				//plane.position.x = position.x;
+				//plane.position.z = position.z;
 				//plane.position.y = position.y;
 				// Note that the plane is created with (x,y)-coordinates, but we want to change (x,z) position 
 				// since the plane is rotated pi/2. 
