@@ -300,7 +300,7 @@
 				var planeGeometry = new THREE.PlaneGeometry(w, h);
 				// color material for testing without texture
 		        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
-		        plane = new THREE.Mesh(planeGeometry, planeMat);
+		        plane = new THREE.Mesh(planeGeometry, planeMaterial);
 		        plane.rotation.x = -0.5 * Math.PI;
 				
 		        plane.receiveShadow  = true;
@@ -367,6 +367,14 @@
 				targetObject.position.y = controls.getObject().position.y;
 				targetObject.position.z = controls.getObject().position.z - 50;
 				scene.add(targetObject);
+
+				//Object to test shadows
+				var cylinderGeo = new THREE.CylinderGeometry(2, 2, 14, 32, false);
+				var cylinderMat = new THREE.MeshPhongMaterial({ color: 0x996363, specular: 0xffffff, shininess: 20 });
+				var cylinder1 = new THREE.Mesh(cylinderGeo, cylinderMat);
+				cylinder1.castShadow = true;
+				cylinder1.receiveShadow = true;
+				scene.add(cylinder1);
 
 
 				//Ambient light
