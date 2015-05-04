@@ -372,6 +372,7 @@
 				var cylinderGeo = new THREE.CylinderGeometry(2, 2, 14, 32, false);
 				var cylinderMat = new THREE.MeshPhongMaterial({ color: 0x996363, specular: 0xffffff, shininess: 20 });
 				var cylinder1 = new THREE.Mesh(cylinderGeo, cylinderMat);
+				cylinder1.position.y = 7;
 				cylinder1.castShadow = true;
 				cylinder1.receiveShadow = true;
 				scene.add(cylinder1);
