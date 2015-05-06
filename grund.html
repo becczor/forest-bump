@@ -99,6 +99,9 @@
 			//calls css-code
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
+
+			//Variabler för ljuset
+			var ficklampa, targetObject;
 			
 			
 			//********* Varify support of webGL ************//
@@ -290,7 +293,7 @@
 				// set how small the image should be, how many times it should repeat
 				planeTex.repeat.set( 10, 10 );
 				// create a material with our texture to add on the object
-				var planeMat = new THREE.MeshBasicMaterial( { map: planeTex } );
+				var planeMat = new THREE.MeshPhongMaterial( { map: planeTex } );
 				// make sure the texture is applied to both sides
 				planeMat.side = THREE.DoubleSide;
 
@@ -327,6 +330,7 @@
 				
 				//Cubes
 
+				/* BYT TILL MASSA TRÄD ISTÄLLET
 				var geometry = new THREE.BoxGeometry( 2, 2, 2 );
 				var material = new THREE.MeshBasicMaterial( { color: 0xf0f0f0 } );
 
@@ -340,7 +344,7 @@
 					mesh.matrixAutoUpdate = false;
 					scene.add( mesh );
 
-				}
+				} */
 
 
 				 //******* Load a tree object ****
@@ -393,6 +397,7 @@
 
                     object.position.y = 0;
                     object.scale.set(0.5, 0.5, 0.5);
+                    //object.castShadow = true;
                     scene.add( object );
 
                 }, onProgress, onError );
@@ -401,20 +406,28 @@
 				//------ Creating light ------//
 
 				//Pointlight (floor)
-				var light1 = new THREE.PointLight( 0xFFFFFF, 0.5, 20);
+				/*var light1 = new THREE.PointLight( 0xFFFFFF, 0.5, 20);
 				light1.position.y = 0;
 				scene.add(light1);
-				scene.add(new THREE.PointLightHelper(light1, 3));
+				scene.add(new THREE.PointLightHelper(light1, 3));*/
 
 				//Spotlight (ficklampa)
-				var light2 = new THREE.SpotLight(0xffffff, 1, 50, Math.PI/9, 2);
+				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
 				
-				light2.position.set(-30, 5, 0); 
-			
-				light2.castShadow = true;
-				light2.shadowCameraNear = 5;
-				scene.add(light2);
-				scene.add(new THREE.SpotLightHelper(light2));
+				ficklampa.castShadow = true;
+				ficklampa.shadowCameraNear = 0.01;
+				ficklampa.shadowCameraFov = 100;
+				
+				scene.add(ficklampa);
+
+				//object som ficklampan pekar på
+				targetObject = new THREE.Object3D();
+
+				targetObject.position.x = controls.getObject().position.x;
+				targetObject.position.y = controls.getObject().position.y;
+				targetObject.position.z = controls.getObject().position.z - 50;
+				scene.add(targetObject);
+
 
 				//Ambient light
 				var lightamb = new THREE.AmbientLight( 0x101010 ); // soft white light
@@ -425,6 +438,7 @@
 				renderer.setClearColor( 0xffffff );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.shadowMapEnabled = true;
 				document.body.appendChild( renderer.domElement );
 				
 				//------ Initialize the stats ------//
@@ -504,6 +518,26 @@
 					prevTime = time;
 
 				}
+
+				//uppdatering av ficklampans postition, rotation
+				var displacement = new THREE.Vector3(5, 5, -1);
+				displacement.applyQuaternion(controls.getObject().quaternion);
+
+				ficklampa.position.x = controls.getObject().position.x - displacement.x;
+
+				ficklampa.position.y = controls.getObject().position.y - displacement.y;
+				ficklampa.position.z = controls.getObject().position.z - displacement.z;
+
+				var displacement2 = new THREE.Vector3(0, 0, 50);
+				displacement2.applyQuaternion(controls.getObject().quaternion);
+
+				targetObject.position.x = controls.getObject().position.x - displacement2.x;
+
+				targetObject.position.y = controls.getObject().position.y - displacement2.y;
+				targetObject.position.z = controls.getObject().position.z - displacement2.z;
+
+
+				ficklampa.target = targetObject;
 				
 				// update and render scene 
 				stats.update();
