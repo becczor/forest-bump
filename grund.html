@@ -61,6 +61,7 @@
 		<script src="js/three.min.js"></script>
 		<script src="js/PointerLockControls.js"></script>
 		<script src="js/Detector.js"></script>
+		<script src="js/OBJLoader.js"></script>
 		<script src="js/stats.min.js"></script>
 
 		<div id="blocker">
@@ -340,6 +341,61 @@
 					scene.add( mesh );
 
 				}
+
+
+				 //******* Load a tree object ****
+                
+
+                // the texture
+
+                var manager = new THREE.LoadingManager();
+                manager.onProgress = function ( item, loaded, total ) {
+
+                    console.log( item, loaded, total );
+
+                };
+
+                var texture = new THREE.Texture();
+
+                var onProgress = function ( xhr ) {
+                    if ( xhr.lengthComputable ) {
+                        var percentComplete = xhr.loaded / xhr.total * 100;
+                        console.log( Math.round(percentComplete, 2) + '% downloaded' );
+                    }
+                };
+
+                var onError = function ( xhr ) {
+                };
+
+
+                var loader = new THREE.ImageLoader( manager );
+                loader.load( './textures/bark.jpg', function ( image ) {
+
+                    texture.image = image;
+                    texture.needsUpdate = true;
+
+                } );
+
+                // model
+
+                var loader = new THREE.OBJLoader( manager );
+                loader.load( './3Dmodels/tree.obj', function ( object ) {
+
+                    object.traverse( function ( child ) {
+
+                        if ( child instanceof THREE.Mesh ) {
+
+                            child.material.map = texture;
+
+                        }
+
+                    } );
+
+                    object.position.y = 0;
+                    object.scale.set(0.5, 0.5, 0.5);
+                    scene.add( object );
+
+                }, onProgress, onError );
 
 				
 				//------ Creating light ------//
