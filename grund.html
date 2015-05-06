@@ -281,7 +281,7 @@
 
 
 				// --- PLANE AND TEXTURE ------
- 				var w = 40, h = 40;
+ 				var w = 500, h = 500;
 
 				// load texture file
 				var planeTex = THREE.ImageUtils.loadTexture("textures/sara.jpg");
@@ -306,8 +306,8 @@
 
 		        // ------ SKYBOX --------
 				// code from http://stemkoski.github.io/Three.js/Skybox.html
-				var imagePrefix = "images/dawnmountain-";
-				var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				var imagePrefix = "images/nightsky-";
+				var directions  = ["right", "left", "top", "down", "front", "back"];
 				var imageSuffix = ".png";
 				var skyGeometry = new THREE.BoxGeometry( 500, 500, 500 );	
 				
