@@ -287,7 +287,7 @@
 				// set repeating image all over the object
 				planeTex.wrapS = planeTex.wrapT = THREE.RepeatWrapping;
 				// set how small the image should be, how many times it should repeat
-				planeTex.repeat.set( 4, 4 );
+				planeTex.repeat.set( 10, 10 );
 				// create a material with our texture to add on the object
 				var planeMat = new THREE.MeshBasicMaterial( { map: planeTex } );
 				// make sure the texture is applied to both sides
@@ -326,20 +326,21 @@
 				
 				//Cubes
 
-				var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+				var geometry = new THREE.BoxGeometry( 2, 2, 2 );
 				var material = new THREE.MeshBasicMaterial( { color: 0xf0f0f0 } );
 
-				for ( var i = 0; i < 500; i ++ ) {
+				for ( var i = 0; i < 1000; i ++ ) {
 
 					var mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = ( Math.random() - 0.5 ) * 1000;
-					mesh.position.y = ( Math.random() - 0.5 ) * 1000;
-					mesh.position.z = ( Math.random() - 0.5 ) * 1000;
+					mesh.position.x = ( Math.random() - 0.5 ) * 200;
+					mesh.position.y = ( Math.random() - 0.5 ) * 200;
+					mesh.position.z = ( Math.random() - 0.5 ) * 200;
 					mesh.updateMatrix();
 					mesh.matrixAutoUpdate = false;
 					scene.add( mesh );
 
 				}
+
 				
 				//------ Creating light ------//
 
@@ -460,10 +461,18 @@
 			function updatePosition(position) 
 			{
 				// Infinite plane
-				console.log("hej");
-				//plane.position.x = position.x;
-				//plane.position.z = position.z;
-				//plane.position.y = position.y;
+				//console.log("hej");
+				var hoppla = controls.getObject().position;
+
+				console.log("hoppla.x: ", hoppla.x);
+				console.log("hoppla.z: ", hoppla.z);
+				
+				// Blocks camera to not go outside skybox
+	     		if ( hoppla.x > 250 || hoppla.z > 250 || hoppla.x < -250 || hoppla.z < -250)
+				{
+					console.log("FAN VAD NAJS");
+					controls.getObject().position.set( 0, 0, 0 );
+				}
 				// Note that the plane is created with (x,y)-coordinates, but we want to change (x,z) position 
 				// since the plane is rotated pi/2. 
 				//planeTex.offset.set(position.x / w * planeTex.repeat.x, position.z / h * planeTex.repeat.y);
