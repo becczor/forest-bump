@@ -208,6 +208,7 @@
 				//------ Initialize camera and scene and controls ------//
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
 				scene = new THREE.Scene();
+				camera.position.set(0,-9,0);
 
 				// Fog - to get more fog: change parameter 2 to a higher value
 				scene.fog = new THREE.FogExp2(0xffffff, 0.004);
@@ -333,23 +334,7 @@
 				var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 				scene.add( skyBox );
 				
-				//Cubes
 
-				/* BYT TILL MASSA TRÄD ISTÄLLET
-				var geometry = new THREE.BoxGeometry( 2, 2, 2 );
-				var material = new THREE.MeshBasicMaterial( { color: 0xf0f0f0 } );
-
-				for ( var i = 0; i < 1000; i ++ ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = ( Math.random() - 0.5 ) * 200;
-					mesh.position.y = ( Math.random() - 0.5 ) * 200;
-					mesh.position.z = ( Math.random() - 0.5 ) * 200;
-					mesh.updateMatrix();
-					mesh.matrixAutoUpdate = false;
-					scene.add( mesh );
-
-				} */
 
 
 				 //******* Load a tree object ****
@@ -480,11 +465,11 @@
 
 					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-					if ( moveForward ) velocity.z -= 400.0 * delta;
-					if ( moveBackward ) velocity.z += 400.0 * delta;
+					if ( moveForward ) velocity.z -= 20.0 * delta;
+					if ( moveBackward ) velocity.z += 20.0 * delta;
 
-					if ( moveLeft ) velocity.x -= 400.0 * delta;
-					if ( moveRight ) velocity.x += 400.0 * delta;
+					if ( moveLeft ) velocity.x -= 20.0 * delta;
+					if ( moveRight ) velocity.x += 20.0 * delta;
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
