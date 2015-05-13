@@ -383,12 +383,20 @@
 				//------ Creating light ------//
 
 				//random blått ljus som man kan ha som kul grej att leta efter
-				var light1 = new THREE.PointLight( 0x0000ff, 1, 40);
-				light1.position.x = ( Math.random() - 0.5 ) * 100;
-				light1.position.y = 0;
-				light1.position.z = ( Math.random() - 0.5 ) * 100;
-				scene.add(new THREE.PointLightHelper(light1, 3))
+				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
+				light1.position.x = ( Math.random() - 0.5 ) * 900;
+				light1.position.y = 2;
+				light1.position.z = ( Math.random() - 0.5 ) * 900;
+				//scene.add(new THREE.PointLightHelper(light1, 3))
 				scene.add( light1 );
+
+				var sphereGeo = new THREE.SphereGeometry(1, 10, 10);
+				var sphereMat = new THREE.MeshPhongMaterial({ color: 0x0000ff, specular: 0xffffff, shininess: 20 });
+				var blueSphere = new THREE.Mesh(sphereGeo, sphereMat);
+				blueSphere.position.x = light1.position.x;
+				blueSphere.position.y = light1.position.y;
+				blueSphere.position.z = light1.position.z;
+				scene.add(blueSphere);
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
