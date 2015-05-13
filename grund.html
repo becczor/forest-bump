@@ -205,7 +205,8 @@
 			
 			
 			//********* Setting up code for three.js ************//
-			function init() {
+			function init() 
+			{
 
 				//------ Initialize camera and scene and controls ------//
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2500 );
@@ -222,7 +223,8 @@
 
 
 				//------ handling keys ------//
-				var onKeyDown = function ( event ) {
+				var onKeyDown = function ( event ) 
+				{
 
 					switch ( event.keyCode ) {
 
@@ -254,7 +256,8 @@
 
 				};
 
-				var onKeyUp = function ( event ) {
+				var onKeyUp = function ( event ) 
+				{
 
 					switch( event.keyCode ) {
 
@@ -293,7 +296,7 @@
 
 				// --- PLANE AND TEXTURE ------
 				
- 				var width = 200; // use this variable for size of plane and skybox and for function "update"
+ 				var width = 100; // use this variable for size of plane and skybox and for function "update"
 
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
@@ -374,24 +377,25 @@
 
 
 		               //for loop to create each tree
-                	for ( var i = 0; i < 500; i ++ ) {
+                	for ( var i = 0; i < 500; i ++ ) 
+                	{
   
-                    model = new THREE.Mesh( geometry, material );
+	                    model = new THREE.Mesh( geometry, material );
+	                    
+	                    var size = Math.random()+0.4;
+	                    model.scale.set(size, size, size);
+	                    model.position.x = ( Math.random() - 0.5 ) * 1000;
+	                    model.position.y = 0;
+	                    model.position.z = ( Math.random() - 0.5 ) * 1000;
+	                    model.castShadow = true;
+	                    model.receiveShadow = true;
+	                    model.rotation.y = Math.random()*2*(Math.PI);
+	                   	scene.add(model);
+	                    
                     
-                    var size = Math.random()+0.4;
-                    model.scale.set(size, size, size);
-                    model.position.x = ( Math.random() - 0.5 ) * 1000;
-                    model.position.y = 0;
-                    model.position.z = ( Math.random() - 0.5 ) * 1000;
-                    model.castShadow = true;
-                    model.receiveShadow = true;
-                    model.rotation.y = Math.random()*2*(Math.PI);
-                   	scene.add(model);
-                    
-                    
-                }
+                	}
 
-            }
+            	}
 
 
             // MOON
@@ -486,7 +490,8 @@
 			
 			//********* Handling window resize************//
 
-			function onWindowResize() {
+			function onWindowResize() 
+			{
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
@@ -498,7 +503,8 @@
 			
 			//********* Animating scene ************//
 
-			function animate() {
+			function animate() 
+			{
 
 				requestAnimationFrame( animate );
 
@@ -584,20 +590,18 @@
 				var pos = controls.getObject().position;
 
 
-				console.log("pos.x: ", pos.x);
-				console.log("pos.z: ", pos.z);
+				//console.log("pos.x: ", pos.x);
+				//console.log("pos.z: ", pos.z);
 
 				
 				// Blocks camera to not go outside skybox
 				// use variable width for size of plane and skybox
-	     		if ( pos.x > width/2 || pos.z > width/2 || pos.x < -width/2 || pos.z < -width/2)
+				if ( pos.x > 50 || pos.z > 50 || pos.x < -50 || pos.z < -50)
+	     		//if ( pos.x > (width/2) || pos.z > (width/2) || pos.x < -(width/2) || pos.z < -(width/2))
 				{
 					console.log("FAN VAD NAJS");
 					controls.getObject().position.set( 0, 0, 0 );
 				}
-				
-
-
 			};
 
 		</script>
