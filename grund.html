@@ -82,6 +82,7 @@
 			var camera, scene, renderer;
 			var geometry, material, mesh, plane;
 			var controls, stats;
+			var width; // for size of plane and blocking function "update"
 
 			var objects = [];
 
@@ -291,35 +292,43 @@
 
 
 				// --- PLANE AND TEXTURE ------
- 				var w = 2000, h = 2000;
-
-				// load texture file
-				var planeTex = THREE.ImageUtils.loadTexture("textures/sara.jpg");
-				// set repeating image all over the object
-				planeTex.wrapS = planeTex.wrapT = THREE.RepeatWrapping;
-				// set how small the image should be, how many times it should repeat
-				planeTex.repeat.set( 10, 10 );
-				// create a material with our texture to add on the object
-				var planeMat = new THREE.MeshPhongMaterial( { map: planeTex } );
-				// make sure the texture is applied to both sides
-				planeMat.side = THREE.DoubleSide;
-
-				//floor
-				var planeGeometry = new THREE.PlaneGeometry(w, h);
-				// color material for testing without texture
-		        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
-		        plane = new THREE.Mesh(planeGeometry, planeMat);
-		        plane.rotation.x = -0.5 * Math.PI;
 				
-		        plane.receiveShadow  = true;
-		        scene.add(plane);
+ 				var width = 200; // use this variable for size of plane and skybox and for function "update"
+
+		        // -------- GROUND (bumpplane) ---------
+		        // use variable width for size of plane and skybox
+		        									//(width, length, segments width, segments length) must be ints!
+		        var geometry = new THREE.PlaneGeometry( width, width, Math.floor(width/3.0), Math.floor(width/3.0));
+
+				for(var i = 0; i < geometry.vertices.length; i++) 
+				{
+	                geometry.vertices[i].z = Math.random() * 1.5;
+	            }
+
+		        var material = new THREE.MeshLambertMaterial(
+		        {
+	            	color:0xBEC2D1, // light gray/blue
+	            	shading: THREE.FlatShading
+		        } );
+
+		        material.side = THREE.DoubleSide;
+
+	            bumpplane = new THREE.Mesh(geometry, material);
+
+	            bumpplane.rotation.x = 90 * (Math.PI / 180);
+	            //mesh.position.y = 10;
+				
+				scene.add(bumpplane);
+				bumpplane.receiveShadow = true;
+				bumpplane.castShadow = true;
+				bumpplane.position.y += 0.5;
 
 		        // ------ SKYBOX --------
 				// code from http://stemkoski.github.io/Three.js/Skybox.html
 				var imagePrefix = "images/starfield-";
 				var directions  = ["right", "left", "top", "down", "front", "back"];
 				var imageSuffix = ".jpg";
-				var skyGeometry = new THREE.BoxGeometry( 2000, 2000, 2000 );	
+				var skyGeometry = new THREE.BoxGeometry( width, width, width );	
 				
 				// create array for images to skybox
 				var materialArray = [];
@@ -336,8 +345,6 @@
 				scene.add( skyBox );
 				
 
-
-
 				 //******* Load a tree object ****
                 //---Load Model----
 
@@ -348,39 +355,45 @@
 
 /*
                   // create a new material
-              var materials = new THREE.MeshLambertMaterial({
-                map: THREE.ImageUtils.loadTexture("./textures/bark.jpg"),  // specify and load the texture
-                colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
-              });
+              	var materials = new THREE.MeshLambertMaterial({
+                	map: THREE.ImageUtils.loadTexture("./textures/bark.jpg"),  // specify and load the texture
+                	colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+                	colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+                	colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
+              	});
 
    
 */
 
-                function addModelToScene( geometry, materials ) 
-                {				
+                function addModelToScene( geometry, materials ) //materials not needed
+		        {				
+		               //create material, load a texturemap
+		               var material = new THREE.MeshLambertMaterial({
+		               			 map: THREE.ImageUtils.loadTexture("./textures/bark.jpg")
+		             	 });
 
+
+		               //for loop to create each tree
                 	for ( var i = 0; i < 500; i ++ ) {
-                    var material = new THREE.MeshLambertMaterial( materials );
-
+  
                     model = new THREE.Mesh( geometry, material );
-                    model.scale.set(0.8, 0.8, 0.8);
+                    
+                    var size = Math.random()+0.4;
+                    model.scale.set(size, size, size);
                     model.position.x = ( Math.random() - 0.5 ) * 1000;
                     model.position.y = 0;
                     model.position.z = ( Math.random() - 0.5 ) * 1000;
                     model.castShadow = true;
                     model.receiveShadow = true;
-                    //model.updateMatrix();
-					//model.matrixAutoUpdate = false;
+                    model.rotation.y = Math.random()*2*(Math.PI);
                    	scene.add(model);
+                    
                     
                 }
 
             }
 
 
-				
 				//------ Creating light ------//
 
 				//random blått ljus som man kan ha som kul grej att leta efter
@@ -543,25 +556,27 @@
 			}
 
 			
-			//********* FUNCTION for making something to follow the camera and stick to its coordinates ************//
+			//********* FUNCTION for using the camera position to change things ************//
 			function updatePosition(position) 
 			{
-				// Infinite plane
-				//console.log("hej");
-				var hoppla = controls.getObject().position;
+				// get the camera position from PointerLock
+				var pos = controls.getObject().position;
 
-				//console.log("hoppla.x: ", hoppla.x);
-				//console.log("hoppla.z: ", hoppla.z);
+
+				//console.log("pos.x: ", pos.x);
+				//console.log("pos.z: ", pos.z);
+
 				
 				// Blocks camera to not go outside skybox
-	     		if ( hoppla.x > 4000 || hoppla.z > 4000 || hoppla.x < -4000 || hoppla.z < -4000)
+				// use variable width for size of plane and skybox
+	     		if ( pos.x > width/2 || pos.z > width/2 || pos.x < -width/2 || pos.z < -width/2)
 				{
 					console.log("FAN VAD NAJS");
 					controls.getObject().position.set( 0, 0, 0 );
 				}
-				// Note that the plane is created with (x,y)-coordinates, but we want to change (x,z) position 
-				// since the plane is rotated pi/2. 
-				//planeTex.offset.set(position.x / w * planeTex.repeat.x, position.z / h * planeTex.repeat.y);
+				
+
+
 			};
 
 		</script>

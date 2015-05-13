@@ -206,11 +206,12 @@
 			function init() {
 
 				//------ Initialize camera and scene and controls ------//
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2500 );
 				scene = new THREE.Scene();
+				camera.position.set(0,-9,0);
 
 				// Fog - to get more fog: change parameter 2 to a higher value
-				scene.fog = new THREE.FogExp2(0xffffff, 0.004);
+				//scene.fog = new THREE.FogExp2(0xffffff, 0.004);
 
 
 				controls = new THREE.PointerLockControls( camera );
@@ -289,7 +290,7 @@
 
 
 				// --- PLANE AND TEXTURE ------
- 				var w = 500, h = 500;
+ 				var w = 2000, h = 2000;
 
 				// load texture file
 				var planeTex = THREE.ImageUtils.loadTexture("textures/sara.jpg");
@@ -314,10 +315,10 @@
 
 		        // ------ SKYBOX --------
 				// code from http://stemkoski.github.io/Three.js/Skybox.html
-				var imagePrefix = "images/nightsky-";
+				var imagePrefix = "images/starfield-";
 				var directions  = ["right", "left", "top", "down", "front", "back"];
 				var imageSuffix = ".jpg";
-				var skyGeometry = new THREE.BoxGeometry( 500, 500, 500 );	
+				var skyGeometry = new THREE.BoxGeometry( 2000, 2000, 2000 );	
 				
 				// create array for images to skybox
 				var materialArray = [];
@@ -333,27 +334,9 @@
 				var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 				scene.add( skyBox );
 				
-				//Cubes
-
-				/* BYT TILL MASSA TRÄD ISTÄLLET
-				var geometry = new THREE.BoxGeometry( 2, 2, 2 );
-				var material = new THREE.MeshBasicMaterial( { color: 0xf0f0f0 } );
-
-				for ( var i = 0; i < 1000; i ++ ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = ( Math.random() - 0.5 ) * 200;
-					mesh.position.y = ( Math.random() - 0.5 ) * 200;
-					mesh.position.z = ( Math.random() - 0.5 ) * 200;
-					mesh.updateMatrix();
-					mesh.matrixAutoUpdate = false;
-					scene.add( mesh );
-
-				} */
 
 
 				 //******* Load a tree object ****
-               
                 //---Load Model----
 
                 //Skapa JSON-inladdare
@@ -362,35 +345,38 @@
                 jsonLoader.load( "./3Dmodels/treeOut.js", addModelToScene );
 
 
-                  // create a new material
-              var materials = new THREE.MeshLambertMaterial({
-                map: THREE.ImageUtils.loadTexture("./textures/bark.jpg"),  // specify and load the texture
-                colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
-              });
 
-   
+                function addModelToScene( geometry, materials) //don't need materials here
+                {		          
 
+	
+		                //create a new material
+		              var material = new THREE.MeshLambertMaterial({
+		                map: THREE.ImageUtils.loadTexture("./textures/bark.jpg"),  // specify and load the texture
+		                /*colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+		                colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
+		                colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]*/
+		              });	
 
-                function addModelToScene( geometry, materials ) 
-                {				
+                	for ( var i = 0; i < 500; i ++ ) {
 
-                	for ( var i = 0; i < 5; i ++ ) {
-                    var material = new THREE.MeshLambertMaterial( materials );
-
+					var yAxis = new THREE.Vector3(0,1,0);
                     model = new THREE.Mesh( geometry, material );
-                    model.scale.set(0.8, 0.8, 0.8);
-                    model.position.x = ( Math.random() - 0.5 ) * 200;
+                    
+                    var size = Math.random()+0.4;
+                    model.scale.set(size, size, size);
+                    model.position.x = ( Math.random() - 0.5 ) * 1000;
                     model.position.y = 0;
-                    model.position.z = ( Math.random() - 0.5 ) * 200;
-                    //model.updateMatrix();
-					//model.matrixAutoUpdate = false;
+                    model.position.z = ( Math.random() - 0.5 ) * 1000;
+                    model.castShadow = true;
+                    model.receiveShadow = true;
+                    model.rotation.y = Math.random()*2*(Math.PI);
                    	scene.add(model);
                     
                 }
 
             }
+
 
 				
 				//------ Creating light ------//
@@ -480,11 +466,11 @@
 
 					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-					if ( moveForward ) velocity.z -= 400.0 * delta;
-					if ( moveBackward ) velocity.z += 400.0 * delta;
+					if ( moveForward ) velocity.z -= 50.0 * delta;
+					if ( moveBackward ) velocity.z += 50.0 * delta;
 
-					if ( moveLeft ) velocity.x -= 400.0 * delta;
-					if ( moveRight ) velocity.x += 400.0 * delta;
+					if ( moveLeft ) velocity.x -= 50.0 * delta;
+					if ( moveRight ) velocity.x += 50.0 * delta;
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
