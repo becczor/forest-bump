@@ -63,6 +63,7 @@
 		<script src="js/Detector.js"></script>
 		<script src="js/JSONLoader.js"></script>
 		<script src="js/stats.min.js"></script>
+		<script src="js/sound.js"></script>
 
 		<div id="blocker">
 
@@ -101,7 +102,7 @@
 			var instructions = document.getElementById( 'instructions' );
 
 			//Variabler för ljuset
-			var ficklampa, targetObject;
+			var ficklampa, targetObject, sound1;
 			
 			
 			//********* Varify support of webGL ************//
@@ -384,12 +385,13 @@
 
 				//random blått ljus som man kan ha som kul grej att leta efter
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
-				light1.position.x = ( Math.random() - 0.5 ) * 900;
+				light1.position.x = ( Math.random() - 0.5 ) * 200;
 				light1.position.y = 2;
-				light1.position.z = ( Math.random() - 0.5 ) * 900;
+				light1.position.z = ( Math.random() - 0.5 ) * 200;
 				//scene.add(new THREE.PointLightHelper(light1, 3))
 				scene.add( light1 );
 
+				//blå boll som är vid det blå ljuset
 				var sphereGeo = new THREE.SphereGeometry(1, 10, 10);
 				var sphereMat = new THREE.MeshPhongMaterial({ color: 0x0000ff, specular: 0xffffff, shininess: 20 });
 				var blueSphere = new THREE.Mesh(sphereGeo, sphereMat);
@@ -397,6 +399,11 @@
 				blueSphere.position.y = light1.position.y;
 				blueSphere.position.z = light1.position.z;
 				scene.add(blueSphere);
+
+				//ljus som spelas vid bollen
+				sound1 = new Sound( [ './music/hejhej.mp3', './music/hejhej.mp3' ], 60, 1 );
+				sound1.position.copy( blueSphere.position );
+				sound1.play();
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
@@ -525,6 +532,8 @@
 
 
 				ficklampa.target = targetObject;
+
+				sound1.update( controls.getObject() );
 				
 				// update and render scene 
 				stats.update();
@@ -541,8 +550,8 @@
 				//console.log("hej");
 				var hoppla = controls.getObject().position;
 
-				console.log("hoppla.x: ", hoppla.x);
-				console.log("hoppla.z: ", hoppla.z);
+				//console.log("hoppla.x: ", hoppla.x);
+				//console.log("hoppla.z: ", hoppla.z);
 				
 				// Blocks camera to not go outside skybox
 	     		if ( hoppla.x > 4000 || hoppla.z > 4000 || hoppla.x < -4000 || hoppla.z < -4000)
