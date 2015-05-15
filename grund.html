@@ -297,11 +297,19 @@
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
 		        									//(width, length, segments width, segments length) must be ints!
-		        var geometry = new THREE.PlaneGeometry( width, width, Math.floor(width/3.0), Math.floor(width/3.0));
+		        var geometry = new THREE.PlaneBufferGeometry( width, width, Math.floor(width/3.0), Math.floor(width/3.0));
+		        // **************************************************
+		        // ** **Use PlaneBufferGeomentry for not using too much memory *****
+		        // http://stackoverflow.com/questions/27198525/three-js-what-is-planebuffergeometry
+				// the vertices are located in PlaneBufferGeometry are located in PlaneBufferGeometry.attributes.position instead of PlaneGeometry.vertices
+				// https://github.com/mrdoob/three.js/blob/a72347515fa34e892f7a9bfa66a34fdc0df55954/src/extras/geometries/PlaneBufferGeometry.js
+				// http://threejs.org/docs/#Reference/Core/BufferAttribute
+				// *************************************************
 
-				for(var i = 0; i < geometry.vertices.length; i++) 
+				for(var i = 0; i < geometry.attributes.position.length; i++) 
 				{
-	                geometry.vertices[i].z = Math.random() * 1.5;
+	                //geometry.vertices[i].z = Math.random() * 1.5;
+                	geometry.attributes.position.setZ ( i, Math.random() * 1.5 );
 	            }
 
 		        var material = new THREE.MeshLambertMaterial(
