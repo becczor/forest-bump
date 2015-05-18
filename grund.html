@@ -13,7 +13,8 @@
 				background-color: #ffffff;
 				margin: 0;
 				overflow: hidden;
-				font-family: arial;
+				font-family: Goudy Old Style;
+				font-size: 20px;
 			}
 
 			#blocker {
@@ -24,6 +25,7 @@
 				height: 100%;
 
 				background-color: rgba(0,0,0,0.5);
+				filter: blur(0.5px);
 
 			}
 
@@ -48,11 +50,19 @@
 				-moz-box-align: center;
 				box-align: center;
 
-				color: #ffffff;
+				color: #9999FF;
 				text-align: center;
 
 				cursor: pointer;
 
+			}
+
+
+			p {
+    			
+   				 font-size: 40px;
+   				 color: #ffffff;
+   				 
 			}
 
 		</style>
@@ -68,9 +78,11 @@
 		<div id="blocker">
 
 			<div id="instructions">
-				<span style="font-size:40px">Click to play</span>
-				<br />
-				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+				<span style="font-size:60px">Forest-Bump</span>
+				<br /> <br /> 
+				<p> Experience a walk through a surreal 3D landscape </p>
+				<br /> <br /> 	
+				Instructions: (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
 			</div>
 
 		</div>
@@ -205,15 +217,16 @@
 			
 			
 			//********* Setting up code for three.js ************//
-			function init() {
+			function init() 
+			{
 
 				//------ Initialize camera and scene and controls ------//
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2500 );
 				scene = new THREE.Scene();
-				camera.position.set(0,-9,0);
+				camera.position.set(0,-6,0);
 
-				// Fog - to get more fog: change parameter 2 to a higher value
-				//scene.fog = new THREE.FogExp2(0xffffff, 0.004);
+				// Fog
+				//scene.fog = new THREE.Fog(0xffffff, 0.02, 3500);
 
 
 				controls = new THREE.PointerLockControls( camera );
@@ -222,7 +235,8 @@
 
 
 				//------ handling keys ------//
-				var onKeyDown = function ( event ) {
+				var onKeyDown = function ( event ) 
+				{
 
 					switch ( event.keyCode ) {
 
@@ -245,16 +259,12 @@
 							moveRight = true;
 							break;
 
-						case 32: // space
-							if ( canJump === true ) velocity.y += 350;
-							canJump = false;
-							break;
-
 					}
 
 				};
 
-				var onKeyUp = function ( event ) {
+				var onKeyUp = function ( event ) 
+				{
 
 					switch( event.keyCode ) {
 
@@ -298,11 +308,19 @@
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
 		        									//(width, length, segments width, segments length) must be ints!
-		        var geometry = new THREE.PlaneGeometry( width, width, Math.floor(width/3.0), Math.floor(width/3.0));
+		        var geometry = new THREE.PlaneBufferGeometry( width, width, Math.floor(width/3.0), Math.floor(width/3.0));
+		        // **************************************************
+		        // ** **Use PlaneBufferGeomentry for not using too much memory *****
+		        // http://stackoverflow.com/questions/27198525/three-js-what-is-planebuffergeometry
+				// the vertices are located in PlaneBufferGeometry are located in PlaneBufferGeometry.attributes.position instead of PlaneGeometry.vertices
+				// https://github.com/mrdoob/three.js/blob/a72347515fa34e892f7a9bfa66a34fdc0df55954/src/extras/geometries/PlaneBufferGeometry.js
+				// http://threejs.org/docs/#Reference/Core/BufferAttribute
+				// *************************************************
 
-				for(var i = 0; i < geometry.vertices.length; i++) 
+				for(var i = 0; i < geometry.attributes.position.length; i++) 
 				{
-	                geometry.vertices[i].z = Math.random() * 1.5;
+	                //geometry.vertices[i].z = Math.random() * 1.5;
+                	geometry.attributes.position.setZ ( i, Math.random() * 1.5 );
 	            }
 
 		        var material = new THREE.MeshLambertMaterial(
@@ -374,8 +392,9 @@
 
 
 		               //for loop to create each tree
-                	for ( var i = 0; i < 500; i ++ ) {
-  
+                	for ( var i = 0; i < 500; i ++ ) 
+                	{
+
                     model = new THREE.Mesh( geometry, material );
                     
                     var size = Math.random()+0.4;
@@ -386,12 +405,33 @@
                     model.castShadow = true;
                     model.receiveShadow = true;
                     model.rotation.y = Math.random()*2*(Math.PI);
-                   	scene.add(model);
-                    
-                    
-                }
+                   	scene.add(model);	                    
 
-            }
+                    
+                	}
+
+            	}
+
+
+            // MOON
+
+            	// load texture file
+				var moonTex = THREE.ImageUtils.loadTexture("textures/moon.jpg");
+				// set repeating image all over the object
+				moonTex.wrapS = moonTex.wrapT = THREE.RepeatWrapping;
+				// set how small the image should be, how many times it should repeat
+				moonTex.repeat.set( 10, 10 );
+				// create a material with our texture to add on the object
+				var moonMat = new THREE.MeshPhongMaterial( { map: moonTex } );
+				// make sure the texture is applied to both sides
+				moonMat.side = THREE.DoubleSide;
+
+            	var moon = new THREE.SphereGeometry( 30, 30, 50 );
+            	//var moonMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
+				var sphere = new THREE.Mesh( moon, moonMat);
+				sphere.position.set(400,300,10);
+
+				scene.add(sphere);
 
 
 				//------ Creating light ------//
@@ -465,7 +505,8 @@
 			
 			//********* Handling window resize************//
 
-			function onWindowResize() {
+			function onWindowResize() 
+			{
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
@@ -477,7 +518,8 @@
 			
 			//********* Animating scene ************//
 
-			function animate() {
+			function animate() 
+			{
 
 				requestAnimationFrame( animate );
 
@@ -497,11 +539,11 @@
 
 					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-					if ( moveForward ) velocity.z -= 50.0 * delta;
-					if ( moveBackward ) velocity.z += 50.0 * delta;
+					if ( moveForward ) velocity.z -= 80.0 * delta;
+					if ( moveBackward ) velocity.z += 80.0 * delta;
 
-					if ( moveLeft ) velocity.x -= 50.0 * delta;
-					if ( moveRight ) velocity.x += 50.0 * delta;
+					if ( moveLeft ) velocity.x -= 80.0 * delta;
+					if ( moveRight ) velocity.x += 80.0 * delta;
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
@@ -569,14 +611,12 @@
 				
 				// Blocks camera to not go outside skybox
 				// use variable width for size of plane and skybox
-	     		if ( pos.x > width/2 || pos.z > width/2 || pos.x < -width/2 || pos.z < -width/2)
+				if ( pos.x > 249 || pos.z > 249 || pos.x < -249 || pos.z < -249)
+	     		//if ( pos.x > (width/2) || pos.z > (width/2) || pos.x < -(width/2) || pos.z < -(width/2))
 				{
 					console.log("FAN VAD NAJS");
 					controls.getObject().position.set( 0, 0, 0 );
 				}
-				
-
-
 			};
 
 		</script>
