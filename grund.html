@@ -320,7 +320,7 @@
 		        var material = new THREE.MeshLambertMaterial(
 		        {
 	            	color:0xBEC2D1, // light gray/blue
-	            	shading: THREE.FlatShading
+	            	shading: THREE.SmoothShading
 		        } );
 
 		        material.side = THREE.DoubleSide;
@@ -610,8 +610,8 @@
 				
 				// Blocks camera to not go outside skybox
 				// use variable width for size of plane and skybox
-				if ( pos.x > 249 || pos.z > 249 || pos.x < -249 || pos.z < -249)
-	     		//if ( pos.x > (width/2) || pos.z > (width/2) || pos.x < -(width/2) || pos.z < -(width/2))
+				//if ( pos.x > 249 || pos.z > 249 || pos.x < -249 || pos.z < -249)
+	     		if ( pos.x > (width/2)-20 || pos.z > (width/2)-20 || pos.x < -(width/2)+20 || pos.z < -(width/2)+20)
 				{
 					console.log("FAN VAD NAJS");
 					controls.getObject().position.set( 0, 0, 0 );
