@@ -345,14 +345,18 @@
 				sound1 = new Sound( [ './music/hejhej.mp3', './music/hejhej.mp3' ], 60, 1 );
 				sound1.position.copy( blueSphere.position );
 				sound1.play();
+
+
 				//Spotlight (ficklampa)
-				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
+				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
 				
 				ficklampa.castShadow = true;
 				ficklampa.shadowCameraNear = 0.01;
 				ficklampa.shadowCameraFov = 150;
+				ficklampa.shadowDarkness = 0.8;
 				
 				scene.add(ficklampa);
+
 				//object som ficklampan pekar på
 				targetObject = new THREE.Object3D();
 				targetObject.position.x = controls.getObject().position.x;
@@ -426,7 +430,7 @@
 					prevTime = time;
 				}
 				//uppdatering av ficklampans postition, rotation
-				var displacement = new THREE.Vector3(3, 5, -1);
+				var displacement = new THREE.Vector3(4, 5, -1);
 
 				displacement.applyQuaternion(controls.getObject().quaternion);
 
