@@ -232,7 +232,7 @@
 		        var material = new THREE.MeshPhongMaterial(
 		        {
 	            	color:0xBEC2D1, // light gray/blue
-	            	shading: THREE.SmoothShading
+	            	//shading: THREE.SmoothShading
 		        } );
 		        material.side = THREE.DoubleSide;
 	            bumpplane = new THREE.Mesh(geometry, material);
@@ -350,7 +350,7 @@
 				
 				ficklampa.castShadow = true;
 				ficklampa.shadowCameraNear = 0.01;
-				ficklampa.shadowCameraFov = 100;
+				ficklampa.shadowCameraFov = 150;
 				
 				scene.add(ficklampa);
 				//object som ficklampan pekar på
