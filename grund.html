@@ -223,7 +223,7 @@
 				//------ Initialize camera and scene and controls ------//
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2500 );
 				scene = new THREE.Scene();
-				camera.position.set(0,-9,0);
+				camera.position.set(0,-6,0);
 
 				// Fog
 				//scene.fog = new THREE.Fog(0xffffff, 0.02, 3500);
@@ -305,10 +305,9 @@
 
 				//------ Creating world ------//
 
-
 				// --- PLANE AND TEXTURE ------
 				
- 				var width = 500; // use this variable for size of plane and skybox and for function "update"
+ 				width = 500; // use this variable for size of plane and skybox and for function "update"
 
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
@@ -325,7 +324,7 @@
 				for(var i = 0; i < geometry.attributes.position.length; i++) 
 				{
 	                //geometry.vertices[i].z = Math.random() * 1.5;
-                	geometry.attributes.position.setZ ( i, Math.random() * 1.5 );
+                	geometry.attributes.position.setZ ( i, Math.random() * -1.5 );
 	            }
 
 		        var material = new THREE.MeshLambertMaterial(
@@ -344,7 +343,7 @@
 				scene.add(bumpplane);
 				bumpplane.receiveShadow = true;
 				bumpplane.castShadow = true;
-				bumpplane.position.y += 0.5;
+				bumpplane.position.y -= 0.5;
 
 		        // ------ SKYBOX --------
 				// code from http://stemkoski.github.io/Three.js/Skybox.html
@@ -392,14 +391,14 @@
 		        {				
 		               //create material, load a texturemap
 		               var material = new THREE.MeshLambertMaterial({
-		               			 map: THREE.ImageUtils.loadTexture("./textures/bark.jpg")
+		               			 map: THREE.ImageUtils.loadTexture("./textures/tilebark_small_repeated_light.jpg")
 		             	 });
 
 
 		               //for loop to create each tree
                 	for ( var i = 0; i < 500; i ++ ) 
-                	{
-  
+                	
+{  
 	                    model = new THREE.Mesh( geometry, material );
 	                    
 	                    var size = Math.random()+0.4;
@@ -434,9 +433,14 @@
             	var moon = new THREE.SphereGeometry( 30, 30, 50 );
             	//var moonMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
 				var sphere = new THREE.Mesh( moon, moonMat);
-				sphere.position.set(400,300,10);
+
+				// position for 1000 size skybox: ( 400, 300, 10), y must be set to negative
+				sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
 
 				scene.add(sphere);
+				console.log("sphere.position.x = ", sphere.position.x);
+				console.log("sphere.position.y = ", sphere.position.y);
+				console.log("sphere.position.z = ", sphere.position.z);
 
 
 				//------ Creating light ------//
