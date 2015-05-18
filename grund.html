@@ -14,7 +14,7 @@
 				margin: 0;
 				overflow: hidden;
 				font-family: Goudy Old Style;
-				font-size: 20px;
+				font-size: 30px;
 			}
 
 			#blocker {
@@ -26,6 +26,7 @@
 
 				background-color: rgba(0,0,0,0.5);
 				filter: blur(0.5px);
+				-webkit-filter: blur(0.5px);
 
 			}
 
@@ -58,12 +59,6 @@
 			}
 
 
-			p {
-    			
-   				 font-size: 40px;
-   				 color: #ffffff;
-   				 
-			}
 
 		</style>
 	</head>
@@ -80,9 +75,9 @@
 			<div id="instructions">
 				<span style="font-size:60px">Forest-Bump</span>
 				<br /> <br /> 
-				<p> Experience a walk through a surreal 3D landscape </p>
+				Experience a walk through a surreal 3D landscape
 				<br /> <br /> 	
-				Instructions: (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+				Instructions: (W, A, S, D = Move, MOUSE = Look around)
 			</div>
 
 		</div>
@@ -257,11 +252,6 @@
 						case 39: // right
 						case 68: // d
 							moveRight = true;
-							break;
-
-						case 32: // space
-							if ( canJump === true ) velocity.y += 350;
-							canJump = false;
 							break;
 
 					}
@@ -548,11 +538,11 @@
 
 					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-					if ( moveForward ) velocity.z -= 50.0 * delta;
-					if ( moveBackward ) velocity.z += 50.0 * delta;
+					if ( moveForward ) velocity.z -= 80.0 * delta;
+					if ( moveBackward ) velocity.z += 80.0 * delta;
 
-					if ( moveLeft ) velocity.x -= 50.0 * delta;
-					if ( moveRight ) velocity.x += 50.0 * delta;
+					if ( moveLeft ) velocity.x -= 80.0 * delta;
+					if ( moveRight ) velocity.x += 80.0 * delta;
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
