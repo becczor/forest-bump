@@ -426,11 +426,14 @@
 					prevTime = time;
 				}
 				//uppdatering av ficklampans postition, rotation
-				var displacement = new THREE.Vector3(5, 5, -1);
+				var displacement = new THREE.Vector3(3, 5, -1);
+
 				displacement.applyQuaternion(controls.getObject().quaternion);
+
 				ficklampa.position.x = controls.getObject().position.x - displacement.x;
 				ficklampa.position.y = controls.getObject().position.y - displacement.y;
 				ficklampa.position.z = controls.getObject().position.z - displacement.z;
+
 				var displacement2 = new THREE.Vector3(0, 0, 50);
 				displacement2.applyQuaternion(controls.getObject().quaternion);
 				targetObject.position.x = controls.getObject().position.x - displacement2.x;
