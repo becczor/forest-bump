@@ -390,7 +390,7 @@
 					scene.add( light1 );
 
 				//Spotlight (ficklampa)
-				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
+				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/8, 2);
 				
 				ficklampa.castShadow = true;
 				ficklampa.shadowCameraNear = 0.01;
@@ -498,7 +498,7 @@
 				}
 
 				//uppdatering av ficklampans postition, rotation
-				var displacement = new THREE.Vector3(5, 5, -1);
+				var displacement = new THREE.Vector3(3, 3, -17);
 				displacement.applyQuaternion(controls.getObject().quaternion);
 
 				ficklampa.position.x = controls.getObject().position.x - displacement.x;

@@ -317,13 +317,13 @@
 				// http://threejs.org/docs/#Reference/Core/BufferAttribute
 				// *************************************************
 
-				for(var i = 0; i < geometry.attributes.position.length; i++) 
+				/*for(var i = 0; i < geometry.attributes.position.length; i++) 
 				{
 	                //geometry.vertices[i].z = Math.random() * 1.5;
                 	geometry.attributes.position.setZ ( i, Math.random() * 1.5 );
-	            }
+	            }  */
 
-		        var material = new THREE.MeshLambertMaterial(
+		        var material = new THREE.MeshPhongMaterial(
 		        {
 	            	color:0xBEC2D1, // light gray/blue
 	            	shading: THREE.FlatShading
@@ -338,7 +338,7 @@
 				
 				scene.add(bumpplane);
 				bumpplane.receiveShadow = true;
-				bumpplane.castShadow = true;
+				bumpplane.castShadow = true; 
 				bumpplane.position.y += 0.5;
 
 		        // ------ SKYBOX --------
@@ -399,9 +399,9 @@
                     
                     var size = Math.random()+0.4;
                     model.scale.set(size, size, size);
-                    model.position.x = ( Math.random() - 0.5 ) * 500;
+                    model.position.x = ( Math.random() - 0.5 ) * width;
                     model.position.y = 0;
-                    model.position.z = ( Math.random() - 0.5 ) * 500;
+                    model.position.z = ( Math.random() - 0.5 ) * width;
                     model.castShadow = true;
                     model.receiveShadow = true;
                     model.rotation.y = Math.random()*2*(Math.PI);
@@ -459,6 +459,7 @@
 				sound1.play();
 
 				//Spotlight (ficklampa)
+				
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
 				
 				ficklampa.castShadow = true;
@@ -466,10 +467,8 @@
 				ficklampa.shadowCameraFov = 100;
 				
 				scene.add(ficklampa);
-
 				//object som ficklampan pekar på
 				targetObject = new THREE.Object3D();
-
 				targetObject.position.x = controls.getObject().position.x;
 				targetObject.position.y = controls.getObject().position.y;
 				targetObject.position.z = controls.getObject().position.z - 50;
@@ -569,22 +568,22 @@
 				}
 
 				//uppdatering av ficklampans postition, rotation
+
 				var displacement = new THREE.Vector3(5, 5, -1);
+
 				displacement.applyQuaternion(controls.getObject().quaternion);
 
 				ficklampa.position.x = controls.getObject().position.x - displacement.x;
-
 				ficklampa.position.y = controls.getObject().position.y - displacement.y;
 				ficklampa.position.z = controls.getObject().position.z - displacement.z;
 
 				var displacement2 = new THREE.Vector3(0, 0, 50);
+
 				displacement2.applyQuaternion(controls.getObject().quaternion);
 
 				targetObject.position.x = controls.getObject().position.x - displacement2.x;
-
 				targetObject.position.y = controls.getObject().position.y - displacement2.y;
 				targetObject.position.z = controls.getObject().position.z - displacement2.z;
-
 
 				ficklampa.target = targetObject;
 
