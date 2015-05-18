@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
 		<meta charset="utf-8">
 		<title>Grund forest-bump</title>
 		<style>
@@ -13,8 +14,11 @@
 				background-color: #ffffff;
 				margin: 0;
 				overflow: hidden;
-				font-family: Goudy Old Style;
+				font-family: 'Slabo 27px', serif;
+
 				font-size: 30px;
+				text-shadow: -2px 0 black, 0 2px black,
+     			 2px 0 black, 0 -2px black;
 			}
 
 			#blocker {
@@ -392,11 +396,11 @@
   
 	                    model = new THREE.Mesh( geometry, material );
 	                    
-	                    var size = Math.random()+0.4;
+	                    var size = Math.random()+0.8;
 	                    model.scale.set(size, size, size);
-	                    model.position.x = ( Math.random() - 0.5 ) * 1000;
+	                    model.position.x = ( Math.random() - 0.5 ) * 500;
 	                    model.position.y = 0;
-	                    model.position.z = ( Math.random() - 0.5 ) * 1000;
+	                    model.position.z = ( Math.random() - 0.5 ) * 500;
 	                    model.castShadow = true;
 	                    model.receiveShadow = true;
 	                    model.rotation.y = Math.random()*2*(Math.PI);
