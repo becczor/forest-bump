@@ -293,7 +293,7 @@
 
 				// --- PLANE AND TEXTURE ------
 				
- 				var width = 200; // use this variable for size of plane and skybox and for function "update"
+ 				var width = 500; // use this variable for size of plane and skybox and for function "update"
 
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
@@ -380,9 +380,9 @@
                     
                     var size = Math.random()+0.4;
                     model.scale.set(size, size, size);
-                    model.position.x = ( Math.random() - 0.5 ) * 1000;
+                    model.position.x = ( Math.random() - 0.5 ) * 500;
                     model.position.y = 0;
-                    model.position.z = ( Math.random() - 0.5 ) * 1000;
+                    model.position.z = ( Math.random() - 0.5 ) * 500;
                     model.castShadow = true;
                     model.receiveShadow = true;
                     model.rotation.y = Math.random()*2*(Math.PI);
@@ -397,10 +397,10 @@
 				//------ Creating light ------//
 
 				//random blått ljus som man kan ha som kul grej att leta efter
-				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
-				light1.position.x = ( Math.random() - 0.5 ) * 200;
+				var light1 = new THREE.PointLight( 0x0000ff, 1, 10);
+				light1.position.x = ( Math.random() - 0.5 ) * 400;
 				light1.position.y = 2;
-				light1.position.z = ( Math.random() - 0.5 ) * 200;
+				light1.position.z = ( Math.random() - 0.5 ) * 400;
 				//scene.add(new THREE.PointLightHelper(light1, 3))
 				scene.add( light1 );
 
@@ -414,7 +414,7 @@
 				scene.add(blueSphere);
 
 				//ljus som spelas vid bollen
-				sound1 = new Sound( [ './music/hejhej.mp3', './music/hejhej.mp3' ], 60, 1 );
+				sound1 = new Sound( [ './music/hejhej.mp3', './music/hejhej.mp3' ], 170, 1 );
 				sound1.position.copy( blueSphere.position );
 				sound1.play();
 
