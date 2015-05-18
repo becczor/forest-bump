@@ -223,7 +223,7 @@
 				//------ Initialize camera and scene and controls ------//
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2500 );
 				scene = new THREE.Scene();
-				camera.position.set(0,-9,0);
+				camera.position.set(0,-6,0);
 
 				// Fog
 				//scene.fog = new THREE.Fog(0xffffff, 0.02, 3500);
@@ -257,11 +257,6 @@
 						case 39: // right
 						case 68: // d
 							moveRight = true;
-							break;
-
-						case 32: // space
-							if ( canJump === true ) velocity.y += 350;
-							canJump = false;
 							break;
 
 					}
@@ -544,11 +539,11 @@
 
 					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-					if ( moveForward ) velocity.z -= 50.0 * delta;
-					if ( moveBackward ) velocity.z += 50.0 * delta;
+					if ( moveForward ) velocity.z -= 60.0 * delta;
+					if ( moveBackward ) velocity.z += 60.0 * delta;
 
-					if ( moveLeft ) velocity.x -= 50.0 * delta;
-					if ( moveRight ) velocity.x += 50.0 * delta;
+					if ( moveLeft ) velocity.x -= 60.0 * delta;
+					if ( moveRight ) velocity.x += 60.0 * delta;
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
