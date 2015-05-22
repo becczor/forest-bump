@@ -381,16 +381,16 @@
 				//------ Creating light ------//
 
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 40);
-					light1.position.x = ( Math.random() - 0.5 ) * 100;
+					light1.position.x = ( Math.random() - 0.5 ) * 400;
 					light1.position.y = 0;
-					light1.position.z = ( Math.random() - 0.5 ) * 100;
+					light1.position.z = ( Math.random() - 0.5 ) * 400;
 					scene.add(new THREE.PointLightHelper(light1, 3))
 					//light1.updateMatrix();
 					//light1.matrixAutoUpdate = false;
 					scene.add( light1 );
 
 				//Spotlight (ficklampa)
-				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 2);
+				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/8, 2);
 				
 				ficklampa.castShadow = true;
 				ficklampa.shadowCameraNear = 0.01;
@@ -498,7 +498,7 @@
 				}
 
 				//uppdatering av ficklampans postition, rotation
-				var displacement = new THREE.Vector3(5, 5, -1);
+				var displacement = new THREE.Vector3(3, 3, -17);
 				displacement.applyQuaternion(controls.getObject().quaternion);
 
 				ficklampa.position.x = controls.getObject().position.x - displacement.x;
