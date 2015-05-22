@@ -369,17 +369,6 @@
                 //Ladda in modeller
                 jsonLoader.load( "./3Dmodels/treeOut.js", addModelToScene );
 
-/*
-                  // create a new material
-              	var materials = new THREE.MeshLambertMaterial({
-                	map: THREE.ImageUtils.loadTexture("./textures/bark.jpg"),  // specify and load the texture
-                	colorAmbient: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                	colorDiffuse: [0.480000026226044, 0.480000026226044, 0.480000026226044],
-                	colorSpecular: [0.8999999761581421, 0.8999999761581421, 0.8999999761581421]
-              	});
-
-   
-*/
 
                 function addModelToScene( geometry, materials ) //materials not needed
 		        {				
@@ -392,7 +381,7 @@
 		               //for loop to create each tree
                 	for ( var i = 0; i < 500; i ++ ) 
                 	
-{  
+					{  
 	                    model = new THREE.Mesh( geometry, material );
 	                    
 	                    var size = Math.random()+0.8;
@@ -615,7 +604,7 @@
 				// Blocks camera to not go outside skybox
 				// use variable width for size of plane and skybox
 				//if ( pos.x > 249 || pos.z > 249 || pos.x < -249 || pos.z < -249)
-	     		if ( pos.x > (width/2)-20 || pos.z > (width/2)-20 || pos.x < -(width/2)+20 || pos.z < -(width/2)+20)
+	     		if ( pos.x > (width/2)-30 || pos.z > (width/2)-30 || pos.x < -(width/2)+30 || pos.z < -(width/2)+30)
 				{
 					console.log("FAN VAD NAJS");
 					controls.getObject().position.set( 0, 0, 0 );
