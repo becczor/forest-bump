@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 		<meta charset="utf-8">
 		<title>Grund forest-bump</title>
 		<style>
@@ -14,7 +14,7 @@
 				background-color: #ffffff;
 				margin: 0;
 				overflow: hidden;
-				font-family: 'Slabo 27px', serif;
+				font-family: 'Oswald', sans-serif;
 
 				font-size: 30px;
 				text-shadow: -2px 0 black, 0 2px black,
@@ -55,7 +55,7 @@
 				-moz-box-align: center;
 				box-align: center;
 
-				color: #9999FF;
+				color: #ffffff;
 				text-align: center;
 
 				cursor: pointer;
@@ -390,9 +390,8 @@
 
 
 		               //for loop to create each tree
-                	for ( var i = 0; i < 500; i ++ ) 
-                	
-{  
+                	for ( var i = 0; i < 500; i ++ )	
+					{  
 	                    model = new THREE.Mesh( geometry, material );
 	                    
 	                    var size = Math.random()+0.8;
@@ -415,26 +414,31 @@
 
             	// load texture file
 				var moonTex = THREE.ImageUtils.loadTexture("textures/moon.jpg");
-				// set repeating image all over the object
-				moonTex.wrapS = moonTex.wrapT = THREE.RepeatWrapping;
-				// set how small the image should be, how many times it should repeat
-				moonTex.repeat.set( 10, 10 );
-				// create a material with our texture to add on the object
-				var moonMat = new THREE.MeshPhongMaterial( { map: moonTex } );
-				// make sure the texture is applied to both sides
-				moonMat.side = THREE.DoubleSide;
 
-            	var moon = new THREE.SphereGeometry( 30, 30, 50 );
+				var sphere = new THREE.SphereGeometry( 30, 30, 50 );
+				// set repeating image all over the object
+				//moonTex.wrapS = moonTex.wrapT = THREE.RepeatWrapping;
+				// set how small the image should be, how many times it should repeat
+				//moonTex.repeat.set( 10, 10 );
+				// create a material with our texture to add on the object
+				var moonMaterial = new THREE.MeshBasicMaterial( { map: moonTex};
+
+        
             	//var moonMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
-				var sphere = new THREE.Mesh( moon, moonMat);
+				var moon = new THREE.Mesh( sphere, moonMaterial);
 
 				// position for 1000 size skybox: ( 400, 300, 10), y must be set to negative
-				sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
+				//sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
 
-				scene.add(sphere);
-				console.log("sphere.position.x = ", sphere.position.x);
-				console.log("sphere.position.y = ", sphere.position.y);
-				console.log("sphere.position.z = ", sphere.position.z);
+				
+			
+				
+
+				scene.add(moon);
+				moon.position.set(0,-10,-10);
+				console.log("moon.position.x = ", moon.position.x);
+				console.log("moon.position.y = ", moon.position.y);
+				console.log("moon.position.z = ", moon.position.z);
 
 
 				//------ Creating light ------//
