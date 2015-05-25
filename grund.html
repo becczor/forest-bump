@@ -89,6 +89,8 @@
 			var instructions = document.getElementById( 'instructions' );
 			//Variabler för ljuset
 			var ficklampa, targetObject, sound1, moonlight;
+			var slenderman;
+			var positionSlender;
 
 			
 			
@@ -160,7 +162,7 @@
 				scene = new THREE.Scene();
 				camera.position.set(0,-6,0);
 				// Fog
-				//scene.fog = new THREE.Fog(0xffffff, 0.02, 3500);
+				scene.fog = new THREE.Fog(0x000000, 0.02,  500);
 				controls = new THREE.PointerLockControls( camera );
 				scene.add( controls.getObject() );
 				//------ handling keys ------//
@@ -330,12 +332,12 @@
 				//random blått ljus som man kan ha som kul grej att leta efter
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
 				light1.position.x = ( Math.random() - 0.5 ) * 400;
-				light1.position.y = 2;
+				light1.position.y = 5;
 				light1.position.z = ( Math.random() - 0.5 ) * 400;
 				//scene.add(new THREE.PointLightHelper(light1, 3))
 				scene.add( light1 );
 
-				//blå boll som är vid det blå ljuset
+				/*blå boll som är vid det blå ljuset
 				var sphereGeo = new THREE.SphereGeometry(1, 10, 10);
 				var sphereMat = new THREE.MeshPhongMaterial({ color: 0x0000ff, specular: 0xffffff, shininess: 20 });
 				var blueSphere = new THREE.Mesh(sphereGeo, sphereMat);
@@ -343,12 +345,58 @@
 				blueSphere.position.y = light1.position.y;
 				blueSphere.position.z = light1.position.z;
 				scene.add(blueSphere);
+				*/
+
+				// SLENDERMAN
+                //Ladda in modeller
+                 var jsonLoader2 = new THREE.JSONLoader();
+                jsonLoader2.load( "./3Dmodels/slenderman2.js", addModelToSceneTwo );
+
+				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
+
+
+                 function addModelToSceneTwo( geometry, materials ) //materials not needed
+		        {				
+		               //create material, load a texturemap
+		               var slenderMaterial = new THREE.MeshLambertMaterial({
+		               			 map: THREE.ImageUtils.loadTexture("./textures/slendermat.jpg")
+		             	 });
+                	
+	                    slenderman = new THREE.Mesh( geometry, slenderMaterial );
+	                    
+	                    //scale slenderman
+	                    slenderman.scale.set(9.5, 9.5, 9.5);
+	                   	
+	                   	//place slenderman at same position as the light
+	                    slenderman.position.x = light1.position.x;
+	                    slenderman.position.y = 4.5;
+	                    slenderman.position.z = light1.position.z;
+	                    slenderman.castShadow = true;
+	                    slenderman.receiveShadow = true;
+	                    //rotate slenderman
+	                    slenderman.rotation.x = -(Math.PI) *(1/2);
+
+
+	                    //slenderman.rotation.y = Math.random()*2*(Math.PI);
+	                   	scene.add(slenderman);
+	                    
+                    	//positionSlender= slenderman.position;
+						
+						sound1.position.copy( slenderman.position );
+
+						
+
+                	}
+                	sound1.play();
+						//ljud som spelas vid bollen
+						
+
 
 				//ljus som spelas vid bollen
-				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
-				sound1.position.copy( blueSphere.position );
+				//sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
+				//sound1.position.copy( slenderman.position );
 
-				sound1.play();
+				//sound1.play();
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
@@ -449,6 +497,8 @@
 				moonlight.position.x = controls.getObject().position.x;
 				moonlight.position.y = 50;
 				moonlight.position.z = controls.getObject().position.z;
+
+
 
 
 				var displacement2 = new THREE.Vector3(0, 0, 50);
