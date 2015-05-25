@@ -88,7 +88,8 @@
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 			//Variabler för ljuset
-			var ficklampa, targetObject, sound1;
+			var ficklampa, targetObject, sound1, moonlight;
+
 			
 			
 			//********* Varify support of webGL ************//
@@ -299,24 +300,30 @@
             	}
             // MOON
             	// load texture file
-				var moonTex = THREE.ImageUtils.loadTexture("textures/moon.jpg");
+				var moonTex = THREE.ImageUtils.loadTexture("./textures/moon1.jpg");
 				// set repeating image all over the object
 				moonTex.wrapS = moonTex.wrapT = THREE.RepeatWrapping;
-				// set how small the image should be, how many times it should repeat
-				moonTex.repeat.set( 10, 10 );
 				// create a material with our texture to add on the object
 				var moonMat = new THREE.MeshPhongMaterial( { map: moonTex } );
 				// make sure the texture is applied to both sides
 				moonMat.side = THREE.DoubleSide;
-            	var moon = new THREE.SphereGeometry( 30, 30, 50 );
+            	var sphere = new THREE.SphereGeometry( 40, 40, 30 );
             	//var moonMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, shininess: 20 });
-				var sphere = new THREE.Mesh( moon, moonMat);
+				var moon = new THREE.Mesh( sphere, moonMat);
+				moon.rotation.x = Math.PI *2/3;
 				// position for 1000 size skybox: ( 400, 300, 10), y must be set to negative
-				sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
-				scene.add(sphere);
-				console.log("sphere.position.x = ", sphere.position.x);
-				console.log("sphere.position.y = ", sphere.position.y);
-				console.log("sphere.position.z = ", sphere.position.z);
+				//sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
+				moon.position.set(10,200,150);
+				scene.add(moon);
+
+				moonlight = new THREE.SpotLight(0xfff4ad, 0.85);
+
+				moonlight.angle = Math.PI/2;
+				moonlight.target = moon;
+				//scene.add(new THREE.PointLightHelper(moonlight, 3))
+				scene.add(moonlight);
+
+
 				//------ Creating light ------//
 				//random blått ljus som man kan ha som kul grej att leta efter
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
@@ -343,9 +350,11 @@
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
 				
 				ficklampa.castShadow = true;
-				ficklampa.shadowCameraNear = 0.01;
+				ficklampa.shadowCameraNear = 1;
 				ficklampa.shadowCameraFov = 150;
 				ficklampa.shadowDarkness = 0.8;
+				ficklampa.shadowMapWidth = 1600; // default is 512
+				ficklampa.shadowMapHeight = 1600; // default is 512	
 				
 				scene.add(ficklampa);
 
@@ -426,9 +435,16 @@
 
 				displacement.applyQuaternion(controls.getObject().quaternion);
 
+				// Ficklampa
 				ficklampa.position.x = controls.getObject().position.x - displacement.x;
 				ficklampa.position.y = controls.getObject().position.y - displacement.y;
 				ficklampa.position.z = controls.getObject().position.z - displacement.z;
+
+				// Moonlight
+				moonlight.position.x = controls.getObject().position.x;
+				moonlight.position.y = 50;
+				moonlight.position.z = controls.getObject().position.z;
+
 
 				var displacement2 = new THREE.Vector3(0, 0, 50);
 				displacement2.applyQuaternion(controls.getObject().quaternion);
