@@ -91,7 +91,8 @@
 			var instructions = document.getElementById( 'instructions' );
 			//Variabler för ljuset
 			var ficklampa, targetObject, sound1, moonlight;
-
+			var slenderman;
+			var positionSlender;
 			
 			
 			//********* Varify support of webGL ************//
@@ -213,7 +214,7 @@
 				//------ Creating world ------//
 				// --- PLANE AND TEXTURE ------
 				
- 				width = 500; // use this variable for size of plane and skybox and for function "update"
+ 				width = 1000; // use this variable for size of plane and skybox and for function "update"
 		        // -------- GROUND (bumpplane) ---------
 		        // use variable width for size of plane and skybox
 		        									//(width, length, segments width, segments length) must be ints!
@@ -328,8 +329,55 @@
 				scene.add(moonlight);
 
 
-				//------ Creating light ------//
+				// blått ljus
+				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
+				light1.position.x = ( Math.random() - 0.5 ) * 400;
+				light1.position.y = 5;
+				light1.position.z = ( Math.random() - 0.5 ) * 400;
+				//scene.add(new THREE.PointLightHelper(light1, 3))
+				scene.add( light1 );
 
+				// SLENDERMAN
+                //Ladda in modeller
+                 var jsonLoader2 = new THREE.JSONLoader();
+                jsonLoader2.load( "./3Dmodels/slenderman2.js", addModelToSceneTwo );
+
+				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
+
+
+                 function addModelToSceneTwo( geometry, materials ) //materials not needed
+		        {				
+		               //create material, load a texturemap
+		               var slenderMaterial = new THREE.MeshLambertMaterial({
+		               			 map: THREE.ImageUtils.loadTexture("./textures/slendermat.jpg")
+		             	 });
+                	
+	                    slenderman = new THREE.Mesh( geometry, slenderMaterial );
+	                    
+	                    //scale slenderman
+	                    slenderman.scale.set(9.5, 9.5, 9.5);
+	                   	
+	                   	//place slenderman at same position as the light
+	                    slenderman.position.x = light1.position.x;
+	                    slenderman.position.y = 4.5;
+	                    slenderman.position.z = light1.position.z;
+	                    slenderman.castShadow = true;
+	                    slenderman.receiveShadow = true;
+	                    //rotate slenderman
+	                    slenderman.rotation.x = -(Math.PI) *(1/2);
+	                   	scene.add(slenderman);
+						sound1.position.copy( slenderman.position );
+
+                	}
+
+                	//ljud som spelas vid slenderman
+                		sound1.play();
+						
+
+
+// SKRÄP 
+				//------ Creating light ------//
+/*
 				//random blått ljus som man kan ha som kul grej att leta efter
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
 				light1.position.x = ( Math.random() - 0.5 ) * 400;
@@ -352,6 +400,8 @@
 				sound1.position.copy( blueSphere.position );
 
 				sound1.play();
+*/
+
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
