@@ -338,10 +338,10 @@
 				scene.add(blueSphere);
 
 				//ljus som spelas vid bollen
-				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 130, 1 );
+				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
 				sound1.position.copy( blueSphere.position );
-				sound1.play();
 
+				sound1.play();
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
@@ -396,6 +396,7 @@
 			//********* Animating scene ************//
 			function animate() 
 			{
+
 				requestAnimationFrame( animate );
 				if ( controlsEnabled ) {
 					raycaster.ray.origin.copy( controls.getObject().position );
