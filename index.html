@@ -283,7 +283,7 @@
 		               			 map: THREE.ImageUtils.loadTexture("./textures/tilebark_small_repeated_light.jpg")
 		             	 });
 		               //for loop to create each tree
-                	for ( var i = 0; i < 500; i ++ )	
+                	for ( var i = 0; i < width; i ++ )	
 
 					{  
 	                    model = new THREE.Mesh( geometry, material );
@@ -317,8 +317,8 @@
 				moon.rotation.x = Math.PI *2/3;
 				// position for 1000 size skybox: ( 400, 300, 10), y must be set to negative
 
-				//sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
-				moon.position.set(10,200,150);
+				moon.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
+				//moon.position.set(10,200,150);
 				scene.add(moon);
 
 				moonlight = new THREE.SpotLight(0xfff4ad, 0.85);
