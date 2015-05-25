@@ -312,6 +312,7 @@
 				var moon = new THREE.Mesh( sphere, moonMat);
 				moon.rotation.x = Math.PI *2/3;
 				// position for 1000 size skybox: ( 400, 300, 10), y must be set to negative
+
 				//sphere.position.set( (width/2)-(width/10) , -((width/2)-2*(width/10)) , width/100);
 				moon.position.set(10,200,150);
 				scene.add(moon);
@@ -325,13 +326,15 @@
 
 
 				//------ Creating light ------//
+
 				//random blått ljus som man kan ha som kul grej att leta efter
 				var light1 = new THREE.PointLight( 0x0000ff, 1, 30);
-				light1.position.x = ( Math.random() - 0.5 ) * 200;
+				light1.position.x = ( Math.random() - 0.5 ) * 400;
 				light1.position.y = 2;
-				light1.position.z = ( Math.random() - 0.5 ) * 200;
+				light1.position.z = ( Math.random() - 0.5 ) * 400;
 				//scene.add(new THREE.PointLightHelper(light1, 3))
 				scene.add( light1 );
+
 				//blå boll som är vid det blå ljuset
 				var sphereGeo = new THREE.SphereGeometry(1, 10, 10);
 				var sphereMat = new THREE.MeshPhongMaterial({ color: 0x0000ff, specular: 0xffffff, shininess: 20 });
@@ -340,11 +343,12 @@
 				blueSphere.position.y = light1.position.y;
 				blueSphere.position.z = light1.position.z;
 				scene.add(blueSphere);
-				//ljus som spelas vid bollen
-				sound1 = new Sound( [ './music/hejhej.mp3', './music/hejhej.mp3' ], 60, 1 );
-				sound1.position.copy( blueSphere.position );
-				sound1.play();
 
+				//ljus som spelas vid bollen
+				sound1 = new Sound( [ './music/ParanormalActivity.mp3', './music/ParanormalActivity.mp3' ], 180, 1 );
+				sound1.position.copy( blueSphere.position );
+
+				sound1.play();
 
 				//Spotlight (ficklampa)
 				ficklampa = new THREE.SpotLight(0xffffff, 2, 200, Math.PI/4, 1);
@@ -401,6 +405,7 @@
 			//********* Animating scene ************//
 			function animate() 
 			{
+
 				requestAnimationFrame( animate );
 				if ( controlsEnabled ) {
 					raycaster.ray.origin.copy( controls.getObject().position );
